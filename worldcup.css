@@ -1,0 +1,93 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  background: #ddd;
+  font-family: Oxygen, sans-serif;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.header {
+  font-size: 48px;
+  background: #fff;
+  padding: 10px;
+  border-bottom: 2px solid #666;
+  margin-bottom: 16px;
+  text-shadow: 2px 2px #ddd;
+}
+.legend {
+  border: 1px solid #666;
+  background: #fff;
+  margin: 8px;
+  padding: 4px 4px 6px 6px;
+  border-radius: 4px;
+  width: 250px;
+}
+.legend .title {
+  color: #000;
+  margin-bottom: 8px;
+  text-transform: lowercase;
+  border-bottom: 1px solid #aaa;
+}
+.legend .group {
+  color: #fff;
+  display: inline-block;
+  width: 22px;
+  height: 22px;
+  margin-right: 4px;
+  border-radius: 4px;
+  padding: 2px 4px 2px 6px;
+}
+.wheel .flagBox {
+  fill: #eee;
+  stroke: #000;
+  stroke-width: 1px;
+  shape-rendering: crispEdges;
+}
+.wheel path.chord {
+  stroke: #000;
+  stroke-width: .25px;
+}
+.wheel #circle:hover path.hide {
+  display: none;
+}
+.details {
+  background: #fff;
+  border: 1px solid #000;
+  border-radius: 6px;
+  float: right;
+  height: 500px;
+  width: 490px;
+  padding: 8px;
+}
+.details img {
+  border: 1px solid #000;
+}
+.details .title {
+  border-bottom: 2px solid #666;
+}
+.details .title img {
+  display: inline-block;
+  margin-right: 8px;
+}
+.details .title span {
+  font-size: 36px;
+  position: relative;
+  top: -8px;
+}
+.details .game {
+  margin-top: 16px;
+}
+.details .game img {
+  float: left;
+}
+.details .game > div {
+  margin-left: 80px;
+}
+.details .game div {
+  font-size: 16px;
+}
+.details .game .name {
+  font-size: 18px;
+  font-weight: bold;
+}

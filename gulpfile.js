@@ -4,7 +4,7 @@ var gulp = require( 'gulp' ),
 
 gulp.task( 'less', function () {
   return gulp
-    .src( 'sample.less' )
+    .src( 'worldcup.less' )
     .pipe( less({
       strictImports: true,
     }))
@@ -12,7 +12,7 @@ gulp.task( 'less', function () {
 });
 
 gulp.task( 'watch', function() {
-  gulp.watch( 'sample.less', [ 'less' ] );
+  gulp.watch( 'worldcup.less', [ 'less' ] );
 });
 
 gulp.task( 'default', [ 'watch' ] );

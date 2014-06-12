@@ -1,13 +1,34 @@
 
 //
+// Util
+//
+
+window.flickerfree =
+  window.requestAnimationFrame ||
+  window.mozRequestAnimationFrame ||
+  window.webkitRequestAnimationFrame ||
+  window.msRequestAnimationFrame ||
+  function( cb ) { return cb(); };
+
+
+//
 // Data Model
 //
 
 var teamsById = {};
-for ( var ti=0, tlen=teams.length; ti<tlen; ti++ ) {
-  var team = teams[ ti ];
-  teamsById[ team.id ] = team;
-}
+
+(function() {
+  var tlen = teams.length,
+      rot = 85.5,
+      rotDec = 360 / tlen;
+
+  for ( var ti=0; ti<tlen; ti++ ) {
+    var team = teams[ ti ];
+    team.rotate = rot;
+    rot -= rotDec;
+    teamsById[ team.id ] = team;
+  }
+})();
 
 function findGame( team1, team2 ) {
 
@@ -22,6 +43,10 @@ function findGame( team1, team2 ) {
   return null;
 }
 
+function formatTime( date ) {
+  return moment( date ).format( 'dddd, MMMM Do YYYY, h:mm a' );
+}
+
 var groupColors = {
   A: '034099',
   B: '1C7319',
@@ -30,7 +55,7 @@ var groupColors = {
   E: 'e69373',
   F: 'F23E16',
   G: '344100',
-  H: 'F4D02C'
+  H: '11ccdd'
 };
 
 for ( var gi=0, glen=games.length; gi<glen; gi++ ) {
@@ -58,6 +83,8 @@ for ( var ri=0, tlen = teams.length; ri<tlen; ri++ ) {
 var outerWidth = 700,
     outerHeight = 700,
 
+    selectedTeam = teams[ 0 ],
+
     margin = { top: 50, right: 50, bottom: 50, left: 50 },
 
     width = outerWidth - margin.left - margin.right,
@@ -79,30 +106,38 @@ var layout = d3.layout.chord()
 var path = d3.svg.chord()
   .radius( innerRadius );
  
-var svg = d3.select( '.chordChart' )
-  .attr( 'width', outerWidth )
-  .attr( 'height', outerHeight )
+var wheelc = d3.select( '.wheel' )
+  .attr( 'width', outerWidth + 10 )
+  .attr( 'height', outerHeight );
+
+wheelc.append( 'rect' )
+  .attr( 'class', 'flagBox' )
+  .attr( 'x', 620 )
+  .attr( 'y', 328 )
+  .attr( 'width', 100 )
+  .attr( 'height', 50 );
+
+var wheel = wheelc.append( 'g' )
+  .attr( 'transform', 'translate(' + margin.left + ',' + margin.top + ')' )
   .append( 'g' )
-    .attr( 'transform', 'translate(' + margin.left + ',' + margin.top + ')' )
-    .append( 'g' )
-      .attr( 'id', 'circle' )
-      .attr( 'transform', 'translate(' + width / 2 + ',' + height / 2 + ')' )
-      .style( 'fill', '#fff' );
+    .attr( 'id', 'circle' )
+    .attr( 'transform', 'translate(' + width / 2 + ',' + height / 2 + ') rotate(' + selectedTeam.rotate + ')' );
  
-svg.append( 'circle' )
+wheel.append( 'circle' )
   .attr( 'r', outerRadius + 1 )
   .attr( 'stroke', '#000' )
-  .attr( 'stroke-width', '3' );
+  .attr( 'stroke-width', '2' )
+  .style( 'fill', '#eee' );
  
 layout.matrix( chordMatrix );
  
-var group = svg.selectAll( '.group' )
+var group = wheel.selectAll( '.group' )
   .data( layout.groups )
   .enter().append( 'g' )
     .attr( 'class', 'group' )
     .on( 'mouseover', mouseover );
  
-var groupPath = group.append('path')
+var groupPath = group.append( 'path' )
   .attr( 'id', function(d, i) { return 'group' + i; } )
   .attr( 'd', arc)
   .style( 'fill', function(d, i) { return groupColors[ teams[i].group ]; } );
@@ -113,15 +148,36 @@ var groupLabel = group.append( 'image' )
   .attr( 'height', '40px' )
   .attr( 'xlink:href', function( d, i ) { return teams[ i ].flag } )
   .attr( 'transform', function(d) {
-    console.log( 'd:', d.startAngle );
     return 'rotate(' + ( ( d.startAngle + 0.02 ) * 180 / Math.PI - 90) + ') translate(' + ( outerRadius + 3 ) + ',0) rotate( 3 )';
+  })
+  .on( 'click', function( e ) {
+    console.log( 'clicked flag',e );
+    var team = teams[ e.index ],
+
+        transform = 'translate(' + width / 2 + ',' + height / 2 + ') rotate(',
+
+        from = transform + selectedTeam.rotate + ')',
+        to   = transform + team.rotate + ')';
+
+    selectedTeam = team;
+    Details.update( selectedTeam );
+
+    wheel
+      //.attr( 'transform', 'translate(' + width / 2 + ',' + height / 2 + ') rotate(' + team.rotate + ')' );
+      .transition()
+      .duration(2000)
+      .attrTween( 'transform', tween );
+
+    function tween(d, i, a) {
+      return d3.interpolateString( from, to );
+    }
   });
 
   //.append('textPath')
   //.attr('xlink:href', function(d, i) { return '#group' + i; })
   //.text(function(d, i) { return teams[i].name.substring( 0, 8 ); });
  
-var chord = svg.selectAll( '.chord' )
+var chord = wheel.selectAll( '.chord' )
   .data( layout.chords )
   .enter().append( 'path' )
     .attr( 'class', 'chord' )
@@ -133,8 +189,10 @@ chord.append( 'title' ).text(function(d) {
   var targetTeam = teams[ d.target.index ];
   var game = findGame( sourceTeam, targetTeam );
 
-  return sourceTeam.name + ' vs. ' + targetTeam.name + '\n' + moment( game.when ).format( 'dddd, MMMM Do YYYY, h:mm a' ) + '\nGroup ' + game.group + '\n' + game.where;
+  return sourceTeam.name + ' vs. ' + targetTeam.name + '\n' + formatTime( game.when ) + '\nGroup ' + game.group + '\n' + game.where;
 });
+
+Details.update( selectedTeam );
  
 function mouseover( d, i ) {
   var group = teams[ i ].group;
