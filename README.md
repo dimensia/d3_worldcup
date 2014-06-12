@@ -1,5 +1,5 @@
-D3.js Sample using 2014 Worldcup
-================================
+D3.js Sample using 2014 World Cup
+=================================
 
 The code for this is on the **gh-pages** branch.
 
