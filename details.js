@@ -24,7 +24,7 @@ var Details = ( function() {
         }
       }
 
-      flickerfree( function() {
+      batchdom( function() {
         $( '.details' ).html(
           '<div class="title">' +
            '<img src="' + team.flag + '">' +

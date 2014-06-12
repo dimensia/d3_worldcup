@@ -3,7 +3,7 @@
 // Util
 //
 
-window.flickerfree =
+window.batchdom =
   window.requestAnimationFrame ||
   window.mozRequestAnimationFrame ||
   window.webkitRequestAnimationFrame ||
@@ -27,6 +27,8 @@ var teamsById = {};
     team.rotate = rot;
     rot -= rotDec;
     teamsById[ team.id ] = team;
+
+    (new Image).src = team.flag; // preload to avoid later flicker
   }
 })();
 
