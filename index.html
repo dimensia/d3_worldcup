@@ -1,8 +1,30 @@
 <html>
  <head>
-  <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+  <link rel="stylesheet" type="text/css" href="sample.css" media="all" />
+  <link href="http://fonts.googleapis.com/css?family=Oxygen:400,300,700" rel="stylesheet" type="text/css">
  </head>
  <body> 
-  todo
+  <div class="header">
+   World Cup 2014:  Group Stage Games
+  </div>
+
+  <div class="legend">
+   <div><div style="background:#034099"></div> Group A</div>
+   <div><div style="background:#1C7319"></div> Group B</div>
+   <div><div style="background:#2EA629"></div> Group C</div>
+   <div><div style="background:#F2C029"></div> Group D</div>
+   <div><div style="background:#e69373"></div> Group E</div>
+   <div><div style="background:#F23E16"></div> Group F</div>
+   <div><div style="background:#344100"></div> Group G</div>
+   <div><div style="background:#F4D02C"></div> Group H</div>
+  </div>
+
+  <svg class="chordChart"></svg>
+
+
+  <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.6.0/moment.min.js"></script>
+  <script src="worldcup2014.js" charset="utf-8"></script>
+  <script src="chord.js" charset="utf-8"></script>
  </body>
 </html>

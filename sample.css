@@ -1,0 +1,41 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  background: #ddd;
+  font: Oxygen, sans-serif;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.header {
+  font-size: 48px;
+  background: #fff;
+  padding: 10px;
+  border-bottom: 2px solid #666;
+  margin-bottom: 16px;
+  text-shadow: 2px 2px #ddd;
+}
+.legend {
+  float: right;
+}
+.legend > div {
+  border: 1px solid #666;
+  background: #fff;
+  margin: 8px;
+  padding: 4px 4px 6px;
+  border-radius: 4px;
+}
+.legend > div > div {
+  width: 20px;
+  height: 20px;
+  float: left;
+  margin-right: 8px;
+  border-radius: 4px;
+}
+path.chord {
+  stroke: #000;
+  stroke-width: .25px;
+}
+#circle:hover .hide {
+  display: none;
+}
