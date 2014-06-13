@@ -183,7 +183,7 @@ function draw() {
   var groupPath = group.append( 'path' )
     .attr( 'id', function(d, i) { return 'group' + i; } )
     .attr( 'd', arc)
-    .style( 'fill', function(d, i) { return groupColors[ teams[i].group ]; } );
+    .style( 'fill', function(d, i) { return '#' + groupColors[ teams[i].group ]; } );
    
   var groupLabel = group.append( 'image' )
     .attr( 'x', 6 )
@@ -205,7 +205,7 @@ function draw() {
     .data( layout.chords )
     .enter().append( 'path' )
       .attr( 'class', 'chord' )
-      .style( 'fill', function(d) { return groupColors[ teams[ d.source.index ].group ]; } )
+      .style( 'fill', function(d) { return '#' + groupColors[ teams[ d.source.index ].group ]; } )
       .attr( 'd', path );
    
   chord.append( 'title' ).text(function(d) {

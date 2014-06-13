@@ -50,7 +50,7 @@ var Details = ( function() {
           projection.rotate(r(t));
           c.clearRect(0, 0, width, height);
           c.fillStyle = '#ccc', c.beginPath(), path(land), c.fill();
-          c.fillStyle = groupColors[ team.group ], c.beginPath(), path(country), c.fill();
+          c.fillStyle = '#' + groupColors[ team.group ], c.beginPath(), path(country), c.fill();
           c.strokeStyle = '#fff', c.lineWidth = .5, c.beginPath(), path(borders), c.stroke();
           c.strokeStyle = '#666', c.lineWidth = 1, c.beginPath(), path(globe), c.stroke();
         };
