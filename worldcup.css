@@ -29,7 +29,7 @@ body > .header {
   text-transform: lowercase;
   border-bottom: 1px solid #aaa;
 }
-.legend .group {
+.groupLetter {
   color: #fff;
   display: inline-block;
   width: 23px;
@@ -85,6 +85,8 @@ body > .header {
 .details .group {
   float: left;
   font-weight: bold;
+  position: relative;
+  top: 3px;
 }
 .details .map {
   float: right;

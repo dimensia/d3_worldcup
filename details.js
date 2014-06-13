@@ -27,35 +27,32 @@ var Details = ( function() {
       globe = {type: 'Sphere'},
       land = topojson.feature(world, world.objects.land),
       countries = topojson.feature(world, world.objects.countries).features,
-      borders = topojson.mesh(world, world.objects.countries, function(a, b) { return a !== b; }),
-      n = countries.length;
+      borders = topojson.mesh(world, world.objects.countries, function(a, b) { return a !== b; });
 
-  countries.filter(function(d) {
-    for ( var ti=0, tlen=teams.length; ti<tlen; ti++ ) {
-      var team = teams[ ti ];
-
+  countries.forEach(function(d) {
+    teams.forEach(function(team) {
       if ( team.topo === d.id ) {
         team.country = d;
         return;
       }
-    }
+    });
   });
 
   function transition( team ) {
     var country = team.country;
 
     d3.transition()
-      .duration(1250)
+      .duration(2000)
       .tween('rotate', function() {
         var p = d3.geo.centroid( country ),
             r = d3.interpolate( projection.rotate(), [-p[0], -p[1]] );
         return function(t) {
           projection.rotate(r(t));
           c.clearRect(0, 0, width, height);
-          c.fillStyle = '#bbb', c.beginPath(), path(land), c.fill();
-          c.fillStyle = '#f00', c.beginPath(), path(country), c.fill();
+          c.fillStyle = '#ccc', c.beginPath(), path(land), c.fill();
+          c.fillStyle = groupColors[ team.group ], c.beginPath(), path(country), c.fill();
           c.strokeStyle = '#fff', c.lineWidth = .5, c.beginPath(), path(borders), c.stroke();
-          c.strokeStyle = '#000', c.lineWidth = 2, c.beginPath(), path(globe), c.stroke();
+          c.strokeStyle = '#666', c.lineWidth = 1, c.beginPath(), path(globe), c.stroke();
         };
       })
       .transition();
@@ -64,12 +61,9 @@ var Details = ( function() {
   return {
     update: function( team ) {
 
-      var html = '',
-          game;
+      var html = '';
 
-      for ( var gi=0, glen=games.length; gi<glen; gi++ ) {
-        game = games[ gi ];
-
+      games.forEach(function(game) {
         if ( game.who[ 0 ] === team.id || game.who[ 1 ] === team.id ) {
           var opponent = teamsById[ game.who[ game.who[ 0 ] === team.id ? 1 : 0 ] ];
 
@@ -83,11 +77,11 @@ var Details = ( function() {
              '</div>' +
             '</div>';
         }
-      }
+      });
 
       batchdom( function() {
         $( '.details .title' ).html( '<img src="' + team.flag + '"><span>' + team.name + '</span>' );
-        $( '.details .group' ).html( '<div class="group">Group ' + game.group + '</div>' );
+        $( '.details .group' ).html( '<div class="group">Group <div class="groupLetter" style="background:#' + groupColors[ team.group ] + '">' + team.group + '</div></div>' );
         $( '.details .games' ).html( html );
       });
 

@@ -29,8 +29,12 @@ var teamsById = {},
     team.rotate = rot;
     rot -= rotDec;
     teamsById[ team.id ] = team;
+  }
 
-    //(new Image).src = team.flag; // preload to avoid later flicker
+  for ( var gi=0, glen=games.length; gi<glen; gi++ ) {
+    var game = games[ gi ];
+    teamsById[ game.who[ 0 ] ].group = game.group;
+    teamsById[ game.who[ 1 ] ].group = game.group;
   }
 })();
 
@@ -47,8 +51,11 @@ function findGame( team1, team2 ) {
   return null;
 }
 
+var format = d3.time.format( '%A, %B %e %Y %I:%M %p' );
+
 function formatTime( date ) {
-  return moment( date ).format( 'dddd, MMMM Do YYYY, h:mm a' );
+  return format( date );
+  //return moment( date ).format( 'dddd, MMMM Do YYYY, h:mm a' );
 }
 
 var groupColors = {
@@ -58,15 +65,18 @@ var groupColors = {
   D: 'F2C029',
   E: 'e69373',
   F: 'F23E16',
-  G: '344100',
+  G: 'FF7F00',
   H: '11ccdd'
 };
 
-for ( var gi=0, glen=games.length; gi<glen; gi++ ) {
-  var game = games[ gi ];
-  teamsById[ game.who[ 0 ] ].group = game.group;
-  teamsById[ game.who[ 1 ] ].group = game.group;
-}
+
+//
+// Chord Wheel
+//
+
+var wheel,
+    wheelWidth,
+    wheelHeight;
 
 var chordMatrix = [];
 for ( var ri=0, tlen = teams.length; ri<tlen; ri++ ) {
@@ -78,16 +88,6 @@ for ( var ri=0, tlen = teams.length; ri<tlen; ri++ ) {
 
   chordMatrix.push( row );
 }
-
-
-//
-// Chord Wheel
-//
-
-var wheel,
-    wheelWidth,
-    wheelHeight;
-
 
 function selectTeam( team ) {
 
