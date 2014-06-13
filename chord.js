@@ -54,8 +54,8 @@ function findGame( team1, team2 ) {
 var format = d3.time.format( '%A, %B %e %Y %I:%M %p' );
 
 function formatTime( date ) {
+  console.log( date );
   return format( date );
-  //return moment( date ).format( 'dddd, MMMM Do YYYY, h:mm a' );
 }
 
 var groupColors = {
@@ -191,7 +191,7 @@ function draw() {
     .attr( 'height', '40px' )
     .attr( 'xlink:href', function( d, i ) { return teams[ i ].flag } )
     .attr( 'transform', function(d) {
-      return 'rotate(' + ( ( d.startAngle + 0.005 ) * 180 / Math.PI - 90) + ') translate(' + ( outerRadius + 3 ) + ',0) rotate( 4.2 )';
+      return 'rotate(' + ( ( d.startAngle + 0.005 ) * 180 / Math.PI - 90) + ') translate(' + ( outerRadius + 3 ) + ',0) rotate(4.2)';
     })
     .on( 'click', function( e ) {
       selectTeam( teams[ e.index ] );
@@ -231,7 +231,7 @@ $(document).ready( function() {
 });
 
 $(window).on( 'resize', function() {
-  $('.wheel').html('');
+  $('.wheel').empty();
   draw();
 });
 
