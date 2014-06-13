@@ -107,6 +107,10 @@ body > .header {
 .details .game img {
   float: left;
 }
+.details .game img:hover {
+  outline-style: outset;
+  outline-color: #000;
+}
 .details .game > div {
   margin-left: 80px;
 }
