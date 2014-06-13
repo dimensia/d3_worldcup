@@ -15,11 +15,13 @@ window.batchdom =
 // Data Model
 //
 
-var teamsById = {};
+var teamsById = {},
+
+    selectedTeam = teams[ 0 ];
 
 (function() {
   var tlen = teams.length,
-      rot = 85.5,
+      rot = 85.4,
       rotDec = 360 / tlen;
 
   for ( var ti=0; ti<tlen; ti++ ) {
@@ -28,7 +30,7 @@ var teamsById = {};
     rot -= rotDec;
     teamsById[ team.id ] = team;
 
-    (new Image).src = team.flag; // preload to avoid later flicker
+    //(new Image).src = team.flag; // preload to avoid later flicker
   }
 })();
 
@@ -79,128 +81,158 @@ for ( var ri=0, tlen = teams.length; ri<tlen; ri++ ) {
 
 
 //
-// Chord Chart
+// Chord Wheel
 //
 
-var outerWidth = 700,
-    outerHeight = 700,
+var wheel,
+    wheelWidth,
+    wheelHeight;
 
-    selectedTeam = teams[ 0 ],
 
-    margin = { top: 50, right: 50, bottom: 50, left: 50 },
+function selectTeam( team ) {
 
-    width = outerWidth - margin.left - margin.right,
-    height = outerHeight - margin.top - margin.bottom,
+  var transform = 'translate(' + wheelWidth / 2 + ',' + wheelHeight / 2 + ') rotate(',
 
-    outerRadius = Math.min(width, height) / 2 - 10,
-    innerRadius = outerRadius - 24;
+      from = transform + selectedTeam.rotate + ')',
+      to   = transform + team.rotate + ')';
 
- 
-var arc = d3.svg.arc()
-  .innerRadius( innerRadius )
-  .outerRadius( outerRadius );
- 
-var layout = d3.layout.chord()
-  .padding( .04 )
-  .sortSubgroups( d3.descending )
-  .sortChords( d3.ascending );
- 
-var path = d3.svg.chord()
-  .radius( innerRadius );
- 
-var wheelc = d3.select( '.wheel' )
-  .attr( 'width', outerWidth + 10 )
-  .attr( 'height', outerHeight );
+  selectedTeam = team;
+  Details.update( selectedTeam );
 
-wheelc.append( 'rect' )
-  .attr( 'class', 'flagBox' )
-  .attr( 'x', 620 )
-  .attr( 'y', 328 )
-  .attr( 'width', 100 )
-  .attr( 'height', 50 );
-
-var wheel = wheelc.append( 'g' )
-  .attr( 'transform', 'translate(' + margin.left + ',' + margin.top + ')' )
-  .append( 'g' )
-    .attr( 'id', 'circle' )
-    .attr( 'transform', 'translate(' + width / 2 + ',' + height / 2 + ') rotate(' + selectedTeam.rotate + ')' );
- 
-wheel.append( 'circle' )
-  .attr( 'r', outerRadius + 1 )
-  .attr( 'stroke', '#000' )
-  .attr( 'stroke-width', '2' )
-  .style( 'fill', '#eee' );
- 
-layout.matrix( chordMatrix );
- 
-var group = wheel.selectAll( '.group' )
-  .data( layout.groups )
-  .enter().append( 'g' )
-    .attr( 'class', 'group' )
-    .on( 'mouseover', mouseover );
- 
-var groupPath = group.append( 'path' )
-  .attr( 'id', function(d, i) { return 'group' + i; } )
-  .attr( 'd', arc)
-  .style( 'fill', function(d, i) { return groupColors[ teams[i].group ]; } );
- 
-var groupLabel = group.append( 'image' )
-  .attr( 'x', 6 )
-  .attr( 'width', '50px' )
-  .attr( 'height', '40px' )
-  .attr( 'xlink:href', function( d, i ) { return teams[ i ].flag } )
-  .attr( 'transform', function(d) {
-    return 'rotate(' + ( ( d.startAngle + 0.02 ) * 180 / Math.PI - 90) + ') translate(' + ( outerRadius + 3 ) + ',0) rotate( 3 )';
-  })
-  .on( 'click', function( e ) {
-    console.log( 'clicked flag',e );
-    var team = teams[ e.index ],
-
-        transform = 'translate(' + width / 2 + ',' + height / 2 + ') rotate(',
-
-        from = transform + selectedTeam.rotate + ')',
-        to   = transform + team.rotate + ')';
-
-    selectedTeam = team;
-    Details.update( selectedTeam );
-
-    wheel
-      //.attr( 'transform', 'translate(' + width / 2 + ',' + height / 2 + ') rotate(' + team.rotate + ')' );
-      .transition()
-      .duration(2000)
-      .attrTween( 'transform', tween );
-
-    function tween(d, i, a) {
+  wheel
+    .transition()
+    .duration(2000)
+    .attrTween( 'transform', function(d, i, a) {
       return d3.interpolateString( from, to );
-    }
+    });
+}
+
+function draw() {
+
+  function calcOuterWidth() {
+    return Math.min( $(window).width() - 490 /* width of details */, 710 );
+  }
+
+  var ow = calcOuterWidth();
+  d3.select( '.wheel' ).attr( 'width', ow ).attr( 'height', ow );
+
+  var windowWidth = $(window).width(),
+
+      outerWidth = calcOuterWidth(), // calc again, scrollbar might be there
+      outerHeight = outerWidth,
+
+      margin = { top: 70, right: 60, bottom: 70, left: 60 },
+
+      width = outerWidth - margin.left - margin.right,
+      height = outerHeight - margin.top - margin.bottom,
+
+      outerRadius = Math.min(width, height) / 2 - 10,
+      innerRadius = outerRadius - 24;
+
+  wheelWidth = width;
+  wheelHeight = height;
+
+  // hack to account for the fact that flags don't get smaller as the circle gets smaller, which they probably should ...
+  var flagBoxOffset = 26;
+  if ( windowWidth < 1180 )
+    flagBoxOffset -= ( 1180 - windowWidth ) / 30;
+   
+  var arc = d3.svg.arc()
+    .innerRadius( innerRadius )
+    .outerRadius( outerRadius );
+   
+  var layout = d3.layout.chord()
+    .padding( .04 )
+    .sortSubgroups( d3.descending )
+    .sortChords( d3.ascending );
+   
+  var path = d3.svg.chord()
+    .radius( innerRadius );
+   
+  var wheelc = d3.select( '.wheel' )
+    .attr( 'width', outerWidth )
+    .attr( 'height', outerHeight );
+
+  wheelc.append( 'rect' )
+    .attr( 'class', 'flagBox' )
+    .attr( 'x', outerWidth - 80 )
+    .attr( 'y', outerHeight / 2 - flagBoxOffset )
+    .attr( 'width', 100 )
+    .attr( 'height', 50 );
+
+  wheel = wheelc.append( 'g' )
+    .attr( 'transform', 'translate(' + margin.left + ',' + margin.top + ')' )
+    .append( 'g' )
+      .attr( 'id', 'circle' )
+      .attr( 'transform', 'translate(' + width / 2 + ',' + height / 2 + ') rotate(' + selectedTeam.rotate + ')' );
+   
+  wheel.append( 'circle' )
+    .attr( 'r', outerRadius + 1 )
+    .attr( 'stroke', '#000' )
+    .attr( 'stroke-width', '2' )
+    .style( 'fill', '#eee' );
+   
+  layout.matrix( chordMatrix );
+   
+  var group = wheel.selectAll( '.group' )
+    .data( layout.groups )
+    .enter().append( 'g' )
+      .attr( 'class', 'group' )
+      .on( 'mouseover', mouseover );
+   
+  var groupPath = group.append( 'path' )
+    .attr( 'id', function(d, i) { return 'group' + i; } )
+    .attr( 'd', arc)
+    .style( 'fill', function(d, i) { return groupColors[ teams[i].group ]; } );
+   
+  var groupLabel = group.append( 'image' )
+    .attr( 'x', 6 )
+    .attr( 'width', '50px' )
+    .attr( 'height', '40px' )
+    .attr( 'xlink:href', function( d, i ) { return teams[ i ].flag } )
+    .attr( 'transform', function(d) {
+      return 'rotate(' + ( ( d.startAngle + 0.005 ) * 180 / Math.PI - 90) + ') translate(' + ( outerRadius + 3 ) + ',0) rotate( 4.2 )';
+    })
+    .on( 'click', function( e ) {
+      selectTeam( teams[ e.index ] );
+    });
+
+    //.append('textPath')
+    //.attr('xlink:href', function(d, i) { return '#group' + i; })
+    //.text(function(d, i) { return teams[i].name.substring( 0, 8 ); });
+
+  var chord = wheel.selectAll( '.chord' )
+    .data( layout.chords )
+    .enter().append( 'path' )
+      .attr( 'class', 'chord' )
+      .style( 'fill', function(d) { return groupColors[ teams[ d.source.index ].group ]; } )
+      .attr( 'd', path );
+   
+  chord.append( 'title' ).text(function(d) {
+    var sourceTeam = teams[ d.source.index ];
+    var targetTeam = teams[ d.target.index ];
+    var game = findGame( sourceTeam, targetTeam );
+
+    return sourceTeam.name + ' vs. ' + targetTeam.name + '\n' + formatTime( game.when ) + '\nGroup ' + game.group + '\n' + game.where;
   });
 
-  //.append('textPath')
-  //.attr('xlink:href', function(d, i) { return '#group' + i; })
-  //.text(function(d, i) { return teams[i].name.substring( 0, 8 ); });
- 
-var chord = wheel.selectAll( '.chord' )
-  .data( layout.chords )
-  .enter().append( 'path' )
-    .attr( 'class', 'chord' )
-    .style( 'fill', function(d) { return groupColors[ teams[ d.source.index ].group ]; } )
-    .attr( 'd', path );
- 
-chord.append( 'title' ).text(function(d) {
-  var sourceTeam = teams[ d.source.index ];
-  var targetTeam = teams[ d.target.index ];
-  var game = findGame( sourceTeam, targetTeam );
+  Details.update( selectedTeam );
+   
+  function mouseover( d, i ) {
+    var group = teams[ i ].group;
+    chord.classed( 'hide', function( p ) {
+      return teams[ p.source.index ].group != group && teams[ p.target.index ].group != group;
+    });
+  }
+}
 
-  return sourceTeam.name + ' vs. ' + targetTeam.name + '\n' + formatTime( game.when ) + '\nGroup ' + game.group + '\n' + game.where;
+$(document).ready( function() {
+  draw();
 });
 
-Details.update( selectedTeam );
- 
-function mouseover( d, i ) {
-  var group = teams[ i ].group;
-  chord.classed( 'hide', function( p ) {
-    return teams[ p.source.index ].group != group && teams[ p.target.index ].group != group;
-  });
-}
+$(window).on( 'resize', function() {
+  $('.wheel').html('');
+  draw();
+});
 
 

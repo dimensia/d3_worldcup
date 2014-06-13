@@ -1,0 +1,24 @@
+{
+  "name": "d3_worldcup",
+  "version": "0.0.1",
+  "description": "D3.js experimentation using World Cup 2014 data",
+  "main": "index.html",
+  "dependencies": {
+    "gulp": "~3.8.0",
+    "gulp-less": "~1.2.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/dimensia/d3_worldcup.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dimensia/d3_worldcup/issues"
+  },
+  "homepage": "https://github.com/dimensia/d3_worldcup"
+}

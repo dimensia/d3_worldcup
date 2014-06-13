@@ -7,7 +7,7 @@ body {
   max-width: 1200px;
   margin: 0 auto;
 }
-.header {
+body > .header {
   font-size: 48px;
   background: #fff;
   padding: 10px;
@@ -21,7 +21,7 @@ body {
   margin: 8px;
   padding: 4px 4px 6px 6px;
   border-radius: 4px;
-  width: 250px;
+  width: 258px;
 }
 .legend .title {
   color: #000;
@@ -32,11 +32,11 @@ body {
 .legend .group {
   color: #fff;
   display: inline-block;
-  width: 22px;
-  height: 22px;
+  width: 23px;
+  height: 23px;
   margin-right: 4px;
   border-radius: 4px;
-  padding: 2px 4px 2px 6px;
+  padding: 2px 6px 2px 6px;
 }
 .wheel .flagBox {
   fill: #eee;
@@ -56,15 +56,22 @@ body {
   border: 1px solid #000;
   border-radius: 6px;
   float: right;
-  height: 500px;
+  height: 800px;
   width: 490px;
   padding: 8px;
+}
+@media (max-width: 1200px) {
+  .details {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-right: none;
+  }
 }
 .details img {
   border: 1px solid #000;
 }
 .details .title {
-  border-bottom: 2px solid #666;
+  border-bottom: 1px solid #666;
 }
 .details .title img {
   display: inline-block;
@@ -75,8 +82,20 @@ body {
   position: relative;
   top: -8px;
 }
+.details .group {
+  float: left;
+  font-weight: bold;
+}
+.details .map {
+  float: right;
+}
+.details .header {
+  clear: both;
+  font-size: 16px;
+  border-bottom: 1px solid #666;
+}
 .details .game {
-  margin-top: 16px;
+  margin-top: 20px;
 }
 .details .game img {
   float: left;

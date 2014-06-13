@@ -3,161 +3,193 @@
 var teams = [
   {
     id:   'ALG',
+    topo: 12,
     name: 'Algeria',
     flag: 'http://img.fifa.com/images/flags/4/alg.png'
   },
   {
     id:   'ARG',
+    topo: 32,
     name: 'Argentina',
     flag: 'http://img.fifa.com/images/flags/4/arg.png'
   },
   {
     id:   'AUS',
+    topo: 36,
     name: 'Australia',
     flag: 'http://img.fifa.com/images/flags/4/aus.png'
   },
   {
     id:   'BEL',
+    topo: 56,
     name: 'Belgium',
     flag: 'http://img.fifa.com/images/flags/4/bel.png'
   },
   {
     id:   'BOS',
+    topo: 70,
     name: 'Bosnia and Herzegovina',
     flag: 'http://img.fifa.com/images/flags/4/bih.png'
   },
   {
     id:   'BRA',
+    topo: 76,
     name: 'Brazil',
     flag: 'http://img.fifa.com/images/flags/4/bra.png'
   },
   {
     id:   'CAM',
+    topo: 120,
     name: 'Cameroon',
     flag: 'http://img.fifa.com/images/flags/4/cmr.png'
   },
   {
     id:   'CHI',
+    topo: 152,
     name: 'Chile',
     flag: 'http://img.fifa.com/images/flags/4/chi.png'
   },
   {
     id:   'COL',
+    topo: 170,
     name: 'Columbia',
     flag: 'http://img.fifa.com/images/flags/4/col.png'
   },
   {
     id:   'COS',
+    topo: 188,
     name: 'Costa Rica',
     flag: 'http://img.fifa.com/images/flags/4/crc.png'
   },
   {
     id:   'COT',
+    topo: 384,
     name: 'Côte d\'Ivoire',
     flag: 'http://img.fifa.com/images/flags/4/civ.png'
   },
   {
     id:   'CRO',
+    topo: 191,
     name: 'Croatia',
     flag: 'http://img.fifa.com/images/flags/4/cro.png'
   },
   {
     id:   'ECU',
+    topo: 218,
     name: 'Ecuador',
     flag: 'http://img.fifa.com/images/flags/4/ecu.png'
   },
   {
     id:   'ENG',
+    topo: 826,
     name: 'England',
     flag: 'http://img.fifa.com/images/flags/4/eng.png'
   },
   {
     id:   'FRA',
+    topo: 250,
     name: 'France',
     flag: 'http://img.fifa.com/images/flags/4/fra.png'
   },
   {
     id:   'GER',
+    topo: 276,
     name: 'Germany',
     flag: 'http://img.fifa.com/images/flags/4/ger.png'
   },
   {
     id:   'GHA',
+    topo: 288,
     name: 'Ghana',
     flag: 'http://img.fifa.com/images/flags/4/gha.png'
   },
   {
     id:   'GRE',
+    topo: 300,
     name: 'Greece',
     flag: 'http://img.fifa.com/images/flags/4/gre.png'
   },
   {
     id:   'HON',
+    topo: 340,
     name: 'Honduras',
     flag: 'http://img.fifa.com/images/flags/4/hon.png'
   },
   {
     id:   'IRA',
+    topo: 364,
     name: 'Iran',
     flag: 'http://img.fifa.com/images/flags/4/irn.png'
   },
   {
     id:   'ITA',
+    topo: 380,
     name: 'Italy',
     flag: 'http://img.fifa.com/images/flags/4/ita.png'
   },
   {
     id:   'JAP',
+    topo: 392,
     name: 'Japan',
     flag: 'http://img.fifa.com/images/flags/4/jpn.png'
   },
   {
     id:   'KOR',
+    topo: 410,
     name: 'Korea Republic',
     flag: 'http://img.fifa.com/images/flags/4/kor.png'
   },
   {
     id:   'MEX',
+    topo: 484,
     name: 'Mexico',
     flag: 'http://img.fifa.com/images/flags/4/mex.png'
   },
   {
     id:   'NET',
+    topo: 528,
     name: 'Netherlands',
     flag: 'http://img.fifa.com/images/flags/4/ned.png'
   },
   {
     id:   'NIG',
+    topo: 566,
     name: 'Nigeria',
     flag: 'http://img.fifa.com/images/flags/4/nga.png'
   },
   {
     id:   'POR',
+    topo: 620,
     name: 'Portugal',
     flag: 'http://img.fifa.com/images/flags/4/por.png'
   },
   {
     id:   'RUS',
+    topo: 643,
     name: 'Russia',
     flag: 'http://img.fifa.com/images/flags/4/rus.png'
   },
   {
     id:   'SPA',
+    topo: 724,
     name: 'Spain',
     flag: 'http://img.fifa.com/images/flags/4/esp.png'
   },
   {
     id:   'SWI',
+    topo: 756,
     name: 'Switzerland',
     flag: 'http://img.fifa.com/images/flags/4/sui.png'
   },
   {
     id:   'URU',
+    topo: 858,
     name: 'Uruguay',
     flag: 'http://img.fifa.com/images/flags/4/uru.png'
   },
   {
     id:   'USA',
+    topo: 840,
     name: 'USA',
     flag: 'http://img.fifa.com/images/flags/4/usa.png'
   }

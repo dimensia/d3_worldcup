@@ -10,7 +10,7 @@ body {
   margin: 0 auto;
 }
 
-.header {
+body > .header {
   font-size: 48px;
   background: #fff;
   padding: 10px;
@@ -25,7 +25,7 @@ body {
   margin: 8px;
   padding: 4px 4px 6px 6px;
   border-radius: 4px;
-  width: 250px;
+  width: 258px;
 
   .title {
     color: #000;
@@ -37,11 +37,11 @@ body {
   .group {
     color: #fff;
     display: inline-block;
-    width: 22px;
-    height: 22px;
+    width: 23px;
+    height: 23px;
     margin-right: 4px;
     border-radius: 4px;
-    padding: 2px 4px 2px 6px;
+    padding: 2px 6px 2px 6px;
   }
 }
 
@@ -69,16 +69,22 @@ body {
   border: 1px solid #000;
   border-radius: 6px;
   float: right;
-  height: 500px;
+  height: 800px;
   width: 490px;
   padding: 8px;
+
+  @media ( max-width: 1200px ) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-right: none;
+  }
 
   img {
     border: 1px solid #000;
   }
 
   .title {
-    border-bottom: 2px solid #666;
+    border-bottom: 1px solid #666;
 
     img {
       display: inline-block;
@@ -92,8 +98,23 @@ body {
     }
   }
 
+  .group {
+    float: left;
+    font-weight: bold;
+  }
+
+  .map {
+    float: right;
+  }
+
+  .header {
+    clear: both;
+    font-size: 16px;
+    border-bottom: 1px solid #666;
+  }
+
   .game {
-    margin-top: 16px;
+    margin-top: 20px;
 
     img {
       float: left;
